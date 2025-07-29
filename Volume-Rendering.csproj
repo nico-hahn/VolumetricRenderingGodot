@@ -6,6 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="android\" />
+    <Folder Include="assets\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="android\**\*.cs" />
