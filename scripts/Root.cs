@@ -1,8 +1,6 @@
 using Godot;
 
-namespace VolumeRendering.scripts;
-
-public partial class Main : Node3D
+public partial class Root : Node3D
 {
 	private XRInterface _xrInterface;
 

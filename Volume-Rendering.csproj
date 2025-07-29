@@ -4,4 +4,10 @@
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <RootNamespace>VolumeRendering</RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="android\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="android\**\*.cs" />
+  </ItemGroup>
 </Project>
