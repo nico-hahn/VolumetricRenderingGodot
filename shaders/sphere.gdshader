@@ -19,13 +19,13 @@ float GetDist(vec3 p){
 float RayMarch(vec3 origin, vec3 direction) {
 	float dO = 0.0;
 	float dS;
-	
+
 	for (int i = 0; i < MAX_STEPS; i++)
 	{
 		vec3 p = origin + dO * direction;
 		dS = GetDist(p);
 		dO += dS;
-		
+
 		if (dS < SURF_DIST || dO > MAX_DIST)
 			break;
 	}
@@ -38,16 +38,16 @@ void vertex() {
 }
 
 void fragment() {
-	
+
 	vec3 ro = world_camera;
 	vec3 rd =  normalize(world_position - ro);
-	
+
 	vec3 col = vec3(1.0);
-	
+
 	float d = RayMarch(ro, rd);
 
 	if (d >= MAX_DIST)
 		discard;
-	
+
 	ALBEDO = col;
 }

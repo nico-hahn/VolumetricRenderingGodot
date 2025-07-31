@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using Godot.Collections;
 
@@ -24,25 +25,13 @@ public partial class VolumetricMesh : MeshInstance3D
         }
     }
 
-    private NoiseTexture3D TestTexture
-    {
-        get
-        {
-            GD.Randomize();
-            var texture = new NoiseTexture3D();
-            var noise = new FastNoiseLite();
-            noise.NoiseType = FastNoiseLite.NoiseTypeEnum.Perlin;
-            noise.SetSeed((int)GD.Randi());
-            texture.SetNoise(noise);
-            texture.SetDepth(64);
-            texture.SetWidth(64);
-            texture.SetHeight(64);
-            return texture;
-        }
-    }
-
     private Array<Image> _slices;
 
+    private ShaderMaterial Shader => (ShaderMaterial)MaterialOverride;
+
+    private bool IsCtrlPressed { get; set; } = false;
+    private float DensityThreshold { get; set; } = 0.1f;
+    
     public override void _Ready()
     {
         _slices = [];
@@ -53,7 +42,6 @@ public partial class VolumetricMesh : MeshInstance3D
             var image = GD.Load<CompressedTexture2D>(loadPath).GetImage();
             if (image != null)
             {
-                GD.Print($"Loaded slice {loadPath} successfully: {image.GetWidth()}x{image.GetHeight()}, {image.GetFormat()}.");
                 _slices.Add(image);
             }
             else
@@ -62,7 +50,42 @@ public partial class VolumetricMesh : MeshInstance3D
             }
         }
 
-        var mat = (ShaderMaterial)MaterialOverride;
-        mat.SetShaderParameter("volume_texture", VolumeTexture);
+        Shader.SetShaderParameter("volume_texture", VolumeTexture);
+        Shader.SetShaderParameter("density_threshold", DensityThreshold);
+    }
+
+    public override void _UnhandledInput(InputEvent @event)
+    {
+        switch (@event)
+        {
+            case InputEventMouseMotion eventMouseMotion:
+                if (IsCtrlPressed)
+                {
+                    var rotation = new Vector3(Rotation.X, Rotation.Y, Rotation.Z);
+                    rotation.Y += eventMouseMotion.Relative.X * 0.001f;
+                    rotation.X += eventMouseMotion.Relative.Y * 0.001f;
+                    SetRotation(rotation);
+                }
+                break;
+            
+            case InputEventKey eventKey:
+                if (eventKey.IsAction("ctrl-press"))
+                {
+                    IsCtrlPressed = eventKey.Pressed;
+                }
+
+                if (eventKey.IsAction("increase-density"))
+                {
+                    DensityThreshold = Math.Clamp(DensityThreshold + 0.01f, 0.0f, 1.0f);
+                    Shader.SetShaderParameter("density_threshold", DensityThreshold);
+                }
+
+                if (eventKey.IsAction("decrease-density"))
+                {
+                    DensityThreshold = Math.Clamp(DensityThreshold - 0.01f, 0.0f, 1.0f);
+                    Shader.SetShaderParameter("density_threshold", DensityThreshold);
+                }
+                break;
+        }
     }
 }

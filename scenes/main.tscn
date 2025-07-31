@@ -28,6 +28,7 @@ render_priority = 0
 shader = ExtResource("2_sugp2")
 shader_parameter/volume_texture = SubResource("PlaceholderTexture3D_sugp2")
 shader_parameter/volume_scale = 1.0
+shader_parameter/density_threshold = 0.1
 
 [sub_resource type="BoxMesh" id="BoxMesh_o5qli"]
 
@@ -90,6 +91,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.683504, 1.89558)
 
 [node name="BackWall" type="MeshInstance3D" parent="MeshHolder"]
 transform = Transform3D(5, 0, 0, 0, -2.18557e-07, -5, 0, 5, -2.18557e-07, 0, 0.422752, -7.25928)
+visible = false
 mesh = SubResource("PlaneMesh_sugp2")
 skeleton = NodePath("../..")
 
@@ -106,7 +108,7 @@ mesh = SubResource("SphereMesh_sugp2")
 skeleton = NodePath("../..")
 
 [node name="VolumetricMesh" type="MeshInstance3D" parent="MeshHolder"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0827589, 0.442263, -3.17054)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0827589, -0.637163, -3.17054)
 material_override = SubResource("ShaderMaterial_sugp2")
 mesh = SubResource("BoxMesh_o5qli")
 skeleton = NodePath("../..")
