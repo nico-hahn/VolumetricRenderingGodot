@@ -5,8 +5,10 @@
 [ext_resource type="Script" uid="uid://cdtw035umu8rs" path="res://scripts/VolumetricMesh.cs" id="3_sugp2"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o5qli"]
+albedo_color = Color(0.966375, 0.759111, 0.596765, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0wfyh"]
+albedo_color = Color(0.964706, 0.760784, 0.596078, 1)
 
 [sub_resource type="Environment" id="Environment_o5qli"]
 background_mode = 1
@@ -18,12 +20,13 @@ ambient_light_color = Color(1, 1, 1, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_sugp2"]
 
-[sub_resource type="NoiseTexture3D" id="NoiseTexture3D_sugp2"]
+[sub_resource type="PlaceholderTexture3D" id="PlaceholderTexture3D_sugp2"]
+size = Vector3i(5, 5, 5)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_sugp2"]
 render_priority = 0
 shader = ExtResource("2_sugp2")
-shader_parameter/volume_texture = SubResource("NoiseTexture3D_sugp2")
+shader_parameter/volume_texture = SubResource("PlaceholderTexture3D_sugp2")
 shader_parameter/volume_scale = 1.0
 
 [sub_resource type="BoxMesh" id="BoxMesh_o5qli"]
@@ -86,7 +89,7 @@ environment = SubResource("Environment_o5qli")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.683504, 1.89558)
 
 [node name="BackWall" type="MeshInstance3D" parent="MeshHolder"]
-transform = Transform3D(5, 0, 0, 0, -2.18557e-07, -5, 0, 5, -2.18557e-07, 0, 0.422752, -12.0059)
+transform = Transform3D(5, 0, 0, 0, -2.18557e-07, -5, 0, 5, -2.18557e-07, 0, 0.422752, -7.25928)
 mesh = SubResource("PlaneMesh_sugp2")
 skeleton = NodePath("../..")
 
