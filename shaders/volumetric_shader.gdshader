@@ -1,0 +1,80 @@
+shader_type spatial;
+render_mode blend_mix;
+
+varying vec3 world_camera;
+varying vec3 world_position;
+
+uniform sampler3D volume_texture;
+uniform float volume_scale = 1.0;
+
+const int MAX_STEPS = 100;
+const float STEP_SIZE = 0.01;
+const float DENSITY_THRESHOLD = 0.01;
+const float SURF_DIST = 1e-3;
+
+void vertex() {
+	world_position = VERTEX;
+	world_camera = (inverse(MODELVIEW_MATRIX) * vec4(0, 0, 0, 1)).xyz; //object space
+}
+
+float findBoxOffset(vec3 ro, vec3 rd) {
+	// Ray-box intersection
+	vec3 box_min = vec3(-0.5);
+	vec3 box_max = vec3(0.5);
+
+	// Avoid division by zero
+	vec3 inv_dir = 1.0 / rd;
+
+	vec3 tmin_tmp = (box_min - ro) * inv_dir;
+	vec3 tmax_tmp = (box_max - ro) * inv_dir;
+
+	vec3 tmin = min(tmin_tmp, tmax_tmp);
+	vec3 tmax = max(tmin_tmp, tmax_tmp);
+
+	float t0 = max(max(tmin.x, tmin.y), tmin.z);
+	float t1 = min(min(tmax.x, tmax.y), tmax.z);
+
+	if (t1 < 0.0 || t0 > t1) {
+		discard; // Ray is not going to hit the box
+	}
+	
+	return max(t0, 0.0);
+}
+
+void fragment() {
+	vec3 ro = world_camera;
+	vec3 rd =  normalize(world_position - ro);
+	
+	vec4 final_color = vec4(0.0);
+	vec3 pos;
+	
+	float t = findBoxOffset(ro, rd);
+
+	for(int i = 0; i < MAX_STEPS; i++) {
+		// Gets current object space position of the raymarch
+		pos = ro + rd * t;
+		t += STEP_SIZE;
+		
+		// Turns the raymarching position into texture coordinates [0..1]
+		// 0.5 offset because origin is in the middle
+		vec3 uvw = pos * volume_scale + vec3(0.5);
+		
+		// Check if point is outside of the volume texture
+		if(any(lessThan(uvw, vec3(0.0))) || any(greaterThan(uvw, vec3(1.0))))
+			continue;
+		
+		float density = texture(volume_texture, uvw).r;
+		if(density > DENSITY_THRESHOLD) {
+			final_color.rgb = vec3(1.0); // Set color to white
+			final_color.a = 1.0;
+			break;
+		}
+		else {
+			// Point is not bright enough
+			discard;
+		}
+	}
+	
+	ALBEDO = final_color.rgb;
+	ALPHA = final_color.a;
+}
