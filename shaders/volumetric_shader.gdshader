@@ -9,8 +9,8 @@ uniform float volume_scale = 1.0;
 
 const int MAX_STEPS = 100;
 const float STEP_SIZE = 0.01;
-const float DENSITY_THRESHOLD = 0.01;
-const float SURF_DIST = 1e-3;
+const float DENSITY_THRESHOLD = 0.1;
+const float MODULATION_FACTOR = 1.0;
 
 void vertex() {
 	world_position = VERTEX;
@@ -66,12 +66,11 @@ void fragment() {
 		float density = texture(volume_texture, uvw).r;
 		if(density > DENSITY_THRESHOLD) {
 			final_color.rgb = vec3(1.0); // Set color to white
-			final_color.a = 1.0;
-			break;
+			final_color.a += density * MODULATION_FACTOR;
 		}
 		else {
 			// Point is not bright enough
-			discard;
+			continue;
 		}
 	}
 	
