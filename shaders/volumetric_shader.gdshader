@@ -63,8 +63,8 @@ void fragment() {
 
 		// Check if point is outside of the volume texture
 		if(any(lessThan(uvw, vec3(0.0))) || any(greaterThan(uvw, vec3(1.0))))
-			// TODO: I think we can break here instead of continuing
-			continue;
+			// No need to further track the ray
+			break;
 
 		float density = texture(volume_texture, uvw).r;
 		if(density > density_threshold) {
