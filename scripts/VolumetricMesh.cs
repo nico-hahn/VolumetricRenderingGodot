@@ -29,8 +29,11 @@ public partial class VolumetricMesh : MeshInstance3D
 
     private ShaderMaterial Shader => (ShaderMaterial)MaterialOverride;
 
-    private bool IsCtrlPressed { get; set; } = false;
+    private bool IsCtrlPressed { get; set; }
+    private bool IsAltPressed { get; set; }
+    
     private float DensityThreshold { get; set; } = 0.1f;
+    private float DepthScale { get; set; } = 0.5f;
     
     public override void _Ready()
     {
@@ -52,7 +55,7 @@ public partial class VolumetricMesh : MeshInstance3D
 
         Shader.SetShaderParameter("volume_texture", VolumeTexture);
         Shader.SetShaderParameter("density_threshold", DensityThreshold);
-        Shader.SetShaderParameter("volume_shape", new Vector3(1f, 1f, .5f));
+        Shader.SetShaderParameter("volume_shape", new Vector3(1f, 1f, DepthScale));
     }
 
     public override void _UnhandledInput(InputEvent @event)
@@ -75,16 +78,35 @@ public partial class VolumetricMesh : MeshInstance3D
                     IsCtrlPressed = eventKey.Pressed;
                 }
 
-                if (eventKey.IsAction("increase-density"))
+                if (eventKey.IsAction("alt-press"))
+                {
+                    IsAltPressed = eventKey.Pressed;
+                }
+
+                if (eventKey.IsAction("increase-density") && IsCtrlPressed)
                 {
                     DensityThreshold = Math.Clamp(DensityThreshold + 0.01f, 0.0f, 1.0f);
                     Shader.SetShaderParameter("density_threshold", DensityThreshold);
                 }
 
-                if (eventKey.IsAction("decrease-density"))
+                if (eventKey.IsAction("decrease-density") && IsCtrlPressed)
                 {
                     DensityThreshold = Math.Clamp(DensityThreshold - 0.01f, 0.0f, 1.0f);
                     Shader.SetShaderParameter("density_threshold", DensityThreshold);
+                }
+
+                if (eventKey.IsAction("increase-depth-scale") && IsAltPressed)
+                {
+                    DepthScale = Math.Clamp(DepthScale + 0.01f, 0.0f, 1.0f);
+                    Shader.SetShaderParameter("volume_shape", new Vector3(1f, 1f, DepthScale));
+
+                }
+
+                if (eventKey.IsAction("decrease-depth-scale") && IsAltPressed)
+                {
+                    DepthScale = Math.Clamp(DepthScale - 0.01f, 0.0f, 1.0f);
+                    Shader.SetShaderParameter("volume_shape", new Vector3(1f, 1f, DepthScale));
+
                 }
                 break;
         }
