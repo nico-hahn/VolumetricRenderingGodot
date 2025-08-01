@@ -52,6 +52,7 @@ public partial class VolumetricMesh : MeshInstance3D
 
         Shader.SetShaderParameter("volume_texture", VolumeTexture);
         Shader.SetShaderParameter("density_threshold", DensityThreshold);
+        Shader.SetShaderParameter("volume_shape", new Vector3(1f, 1f, .5f));
     }
 
     public override void _UnhandledInput(InputEvent @event)
