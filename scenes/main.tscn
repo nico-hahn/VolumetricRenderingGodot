@@ -25,6 +25,7 @@ shader = ExtResource("2_sugp2")
 shader_parameter/volume_texture = SubResource("PlaceholderTexture3D_sugp2")
 shader_parameter/volume_shape = Vector3(1, 1, 1)
 shader_parameter/density_threshold = 0.1
+shader_parameter/modulation_factor = 1.0
 
 [sub_resource type="BoxMesh" id="BoxMesh_o5qli"]
 
@@ -83,10 +84,9 @@ hand_tracker = &"/user/hand_tracker/right"
 environment = SubResource("Environment_o5qli")
 
 [node name="MeshContainer" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.683504, 1.89558)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.52206)
 
 [node name="VolumetricMesh" type="MeshInstance3D" parent="MeshContainer"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0827589, -0.637163, -3.17054)
 material_override = SubResource("ShaderMaterial_sugp2")
 mesh = SubResource("BoxMesh_o5qli")
 skeleton = NodePath("../..")

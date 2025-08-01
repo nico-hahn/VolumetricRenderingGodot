@@ -7,12 +7,10 @@ varying vec3 world_position;
 uniform sampler3D volume_texture;
 uniform vec3 volume_shape = vec3(1.0);
 uniform float density_threshold = 0.1;
+uniform float modulation_factor = 1.0;
 
 // TODO: Scale STEP_SIZE with MAX_STEPS
-const int MAX_STEPS = 100;
-const float STEP_SIZE = 0.01;
-
-const float MODULATION_FACTOR = 1.0;
+const float MAX_STEPS = 256.0;
 
 void vertex() {
 	world_position = VERTEX;
@@ -52,10 +50,10 @@ void fragment() {
 
 	float t = findBoxOffset(ro, rd);
 
-	for(int i = 0; i < MAX_STEPS; i++) {
+	for(int i = 0; i < int(MAX_STEPS); i++) {
 		// Gets current object space position of the raymarch
 		pos = ro + rd * t;
-		t += STEP_SIZE;
+		t += 1.0/(MAX_STEPS);
 
 		// Turns the raymarching position into texture coordinates [0..1]
 		// 0.5 offset because origin is in the middle
@@ -69,7 +67,7 @@ void fragment() {
 		float density = texture(volume_texture, uvw).r;
 		if(density > density_threshold) {
 			final_color.rgb += vec3(density); // Set color to white
-			final_color.a += density * MODULATION_FACTOR;
+			final_color.a += density * modulation_factor;
 		}
 		else {
 			// Point is not bright enough
