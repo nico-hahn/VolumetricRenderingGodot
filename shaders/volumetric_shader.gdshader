@@ -68,7 +68,7 @@ void fragment() {
 
 		float density = texture(volume_texture, uvw).r;
 		if(density > density_threshold) {
-			final_color.rgb = vec3(1.0); // Set color to white
+			final_color.rgb += vec3(density); // Set color to white
 			final_color.a += density * MODULATION_FACTOR;
 		}
 		else {
