@@ -8,9 +8,7 @@ uniform sampler3D volume_texture;
 uniform vec3 volume_shape = vec3(1.0);
 uniform float density_threshold = 0.1;
 uniform float modulation_factor = 1.0;
-
-// TODO: Scale STEP_SIZE with MAX_STEPS
-const float MAX_STEPS = 256.0;
+uniform float max_steps = 256.0;
 
 void vertex() {
 	world_position = VERTEX;
@@ -48,12 +46,13 @@ void fragment() {
 	vec4 final_color = vec4(0.0);
 	vec3 pos;
 
+	float step_size = 1.0/max_steps;
 	float t = findBoxOffset(ro, rd);
 
-	for(int i = 0; i < int(MAX_STEPS); i++) {
+	for(int i = 0; i < int(max_steps); i++) {
 		// Gets current object space position of the raymarch
 		pos = ro + rd * t;
-		t += 1.0/(MAX_STEPS);
+		t += step_size;
 
 		// Turns the raymarching position into texture coordinates [0..1]
 		// 0.5 offset because origin is in the middle
@@ -66,7 +65,9 @@ void fragment() {
 
 		float density = texture(volume_texture, uvw).r;
 		if(density > density_threshold) {
-			final_color.rgb += vec3(density); // Set color to white
+			// I think, this should depend on step size -> otherwise an area will
+			// 'light up' faster, the more often it is sampled. But idk how.
+			final_color.rgb += vec3(density);
 			final_color.a += density * modulation_factor;
 		}
 		else {

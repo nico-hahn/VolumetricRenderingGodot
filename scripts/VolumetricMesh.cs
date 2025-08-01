@@ -61,7 +61,7 @@ public partial class VolumetricMesh : MeshInstance3D
         Shader.SetShaderParameter("density_threshold", DensityThreshold);
         Shader.SetShaderParameter("volume_shape", new Vector3(1f, 1f, DepthScale));
         Shader.SetShaderParameter("modulation_factor", ModulationFactor);
-        Shader.SetShaderParameter("sampling_steps", SamplingSteps * 1.0f);
+        Shader.SetShaderParameter("max_steps", SamplingSteps * 1.0f);
     }
 
     public override void _UnhandledInput(InputEvent @event)
