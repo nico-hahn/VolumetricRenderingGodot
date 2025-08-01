@@ -5,7 +5,7 @@ varying vec3 world_camera;
 varying vec3 world_position;
 
 uniform sampler3D volume_texture;
-uniform float volume_scale = 1.0;
+uniform vec3 volume_shape = vec3(1.0);
 uniform float density_threshold = 0.1;
 
 // TODO: Scale STEP_SIZE with MAX_STEPS
@@ -21,8 +21,8 @@ void vertex() {
 
 float findBoxOffset(vec3 ro, vec3 rd) {
 	// Ray-box intersection
-	vec3 box_min = vec3(-0.5);
-	vec3 box_max = vec3(0.5);
+	vec3 box_min = -0.5 * volume_shape;
+	vec3 box_max =  0.5 * volume_shape;
 
 	// Avoid division by zero
 	vec3 inv_dir = 1.0 / rd;
@@ -59,7 +59,7 @@ void fragment() {
 
 		// Turns the raymarching position into texture coordinates [0..1]
 		// 0.5 offset because origin is in the middle
-		vec3 uvw = pos * volume_scale + vec3(0.5);
+		vec3 uvw = (pos / volume_shape) + 0.5;
 
 		// Check if point is outside of the volume texture
 		if(any(lessThan(uvw, vec3(0.0))) || any(greaterThan(uvw, vec3(1.0))))

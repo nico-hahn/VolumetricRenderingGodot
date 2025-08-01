@@ -27,7 +27,7 @@ size = Vector3i(5, 5, 5)
 render_priority = 0
 shader = ExtResource("2_sugp2")
 shader_parameter/volume_texture = SubResource("PlaceholderTexture3D_sugp2")
-shader_parameter/volume_scale = 1.0
+shader_parameter/volume_shape = Vector3(1, 1, 1)
 shader_parameter/density_threshold = 0.1
 
 [sub_resource type="BoxMesh" id="BoxMesh_o5qli"]
