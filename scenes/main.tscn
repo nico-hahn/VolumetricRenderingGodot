@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://boxuohdyb6unr" path="res://scripts/Root.cs" id="1_o5qli"]
 [ext_resource type="Script" uid="uid://bethl6y6car3" path="res://scripts/MeshContainer.cs" id="2_jyhfs"]
-[ext_resource type="Shader" uid="uid://8bwjc0t3m3ly" path="res://shaders/volumetric_shader.gdshader" id="2_sugp2"]
+[ext_resource type="Shader" uid="uid://p3ntbbfptgmm" path="res://shaders/xr_volumetric_shader.gdshader" id="3_jyhfs"]
 [ext_resource type="Script" uid="uid://cdtw035umu8rs" path="res://scripts/VolumetricMesh.cs" id="3_sugp2"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o5qli"]
@@ -22,7 +22,7 @@ size = Vector3i(5, 5, 5)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_sugp2"]
 render_priority = 0
-shader = ExtResource("2_sugp2")
+shader = ExtResource("3_jyhfs")
 shader_parameter/volume_texture = SubResource("PlaceholderTexture3D_sugp2")
 shader_parameter/volume_shape = Vector3(1, 1, 1)
 shader_parameter/density_threshold = 0.1
@@ -91,6 +91,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.31702)
 script = ExtResource("2_jyhfs")
 
 [node name="VolumetricMesh" type="MeshInstance3D" parent="MeshContainer"]
+visible = false
 material_override = SubResource("ShaderMaterial_sugp2")
 mesh = SubResource("BoxMesh_o5qli")
 skeleton = NodePath("../..")
@@ -98,3 +99,14 @@ script = ExtResource("3_sugp2")
 DepthResolution = 263
 SliceDirectory = "slices"
 SamplingSteps = 64
+
+[node name="1170Mesh" type="MeshInstance3D" parent="MeshContainer"]
+material_override = SubResource("ShaderMaterial_sugp2")
+mesh = SubResource("BoxMesh_o5qli")
+skeleton = NodePath("../..")
+script = ExtResource("3_sugp2")
+XResolution = 1672
+YResolution = 753
+DepthResolution = 241
+SliceDirectory = "slices_1170"
+SamplingSteps = 128
