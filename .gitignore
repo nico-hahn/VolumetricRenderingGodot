@@ -6,3 +6,4 @@
 *.DotSettings
 *.import
 .assets/
+*.uid
