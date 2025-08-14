@@ -21,11 +21,19 @@ In order to use the application, prepare the following things:
   * Enable developer mode on your device (see [documentation](https://developers.meta.com/horizon/documentation/native/android/mobile-device-setup/))
 
 ## Controls
-Todo: write about keyboard inputs here
+The following Buttons can be combined with pressing + / - in order increase
+or decrease their respective parameters:
+* _Option/Alt_: Depth scale
+* _Cmd/Ctrl_: Density threshold (i.e. a threshold for a voxel brightness to be considered relevant and included in the raymarch calculation)
+* _Shift_: Modulation Scale (i.e. How much impact each single voxel's brightness has on the resulting brightness; lower values will even out the weight of any two voxel's brightnesses)
+* _B_: Starts the benchmark
 
 ## Benchmarks
-All Benchmarks listed here are done with the `1170_gold_img` data set
-and the shader's default settings. Godot has Vsync turned off. Viewport dimensions are 1152x648.
+All Benchmarks listed here are done with the `1135_gold_img` data set
+and the shader's default settings, except for the sampling rate which
+has been set to 64. (Lower sampling rate means worse image output precision,
+but with a higher sampling rate the performance on the standalone
+Quest 3 would have been even worde.) Godot has Vsync turned off. Viewport dimensions are 1152x648.
 
 ### MacBook Air M3
 Program is running with power supply (not on battery).
@@ -33,14 +41,34 @@ Program is running with power supply (not on battery).
 |                | Value              |
 |:---------------|:-------------------|
 | Frames Counted | 3835               |
-| Average:       | 253.77919293430318 |
-| Minimum:       | 112.60415884693342 |
-| Maximum:       | 396.63938268494314 |
-| Deviation:     | 47.985137581993136 |
+| Average        | 253.77919293430318 |
+| Minimum        | 112.60415884693342 |
+| Maximum        | 396.63938268494314 |
+| Deviation      | 47.985137581993136 |
 
 ### RX Vega 56
+|                | Value              |
+|:---------------|:-------------------|
+| Frames Counted | 13105              |
+| Average        | 976,1332827586115  |
+| Minimum        | 242,85598640006475 |
+| Maximum        | 9512,485126039312  |
+| Deviation      | 637,927954699922   |
 
 ### RX Vega 56 - VR
+VR is achieved using Meta Link and a Quest 3 as display device.
+Note, that Meta Link enforces the framerate to match the device's
+screen refresh rate, even though VSync is turned off. However,
+one can can choose between different values from 72 Hz up to 120 Hz.  
+The benchmark has been done with the screen refresh rate set to 120 Hz
+
+|                | Value              |
+|:---------------|:-------------------|
+| Frames Counted | 1879               |
+| Average        | 119,69563278797347 |
+| Minimum        | 52,90165582182721  |
+| Maximum        | 121,87690432664644 |
+| Deviation      | 2,499163365875747  |
 
 ### Meta Quest 3 (Standalone)
 Left hand tracker must be set to `/user/fbhandaim/left` in order to get Godot to listen to the left hand input.
@@ -49,7 +77,7 @@ Note, that this will mess up the rotation of the hand models.
 |                | Value              |
 |:---------------|:-------------------|
 | Frames Counted | 363                |
-| Average:       | 25.034885077865844 |
-| Minimum:       | 10.296399006054282 |
-| Maximum:       | 49.80823828261193  |
-| Deviation:     | 7.3812614800931495 |
+| Average        | 25.034885077865844 |
+| Minimum        | 10.296399006054282 |
+| Maximum        | 49.80823828261193  |
+| Deviation      | 7.3812614800931495 |
