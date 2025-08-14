@@ -16,7 +16,7 @@ public partial class MeshContainer : Node3D
 	public override void _Ready()
 	{
 		base._Ready();
-		GetNode<XRController3D>("%RightHand").ButtonPressed += (_) =>
+		GetNode<XRController3D>("%LeftHand").ButtonPressed += (_) =>
 		{
 			StartBenchmark();
 		};
@@ -71,8 +71,8 @@ public partial class MeshContainer : Node3D
 		var variance = frameRates.Select(x => Math.Pow(x - avg, 2)).Average();
 		var deviation = Math.Sqrt(variance);
 		GD.Print("##########   Benchmark report:   ##########");
-		GD.Print($"Fps samples: [{string.Join(", ", frameRates.Select(f => f.ToString("F2")))}]");
-		GD.Print($"Sample count: {frameRates.Length}");
+		//GD.Print($"Fps samples: [{string.Join(", ", frameRates.Select(f => f.ToString("F2")))}]");
+		GD.Print($"FPS counted: {frameRates.Length}");
 		GD.Print($"Average: {avg}");
 		GD.Print($"Minimum: {frameRates.Min()}");
 		GD.Print($"Maximum: {frameRates.Max()}");

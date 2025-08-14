@@ -24,4 +24,32 @@ In order to use the application, prepare the following things:
 Todo: write about keyboard inputs here
 
 ## Benchmarks
-TBD
+All Benchmarks listed here are done with the `1170_gold_img` data set
+and the shader's default settings. Godot has Vsync turned off. Viewport dimensions are 1152x648.
+
+### MacBook Air M3
+Program is running with power supply (not on battery).
+
+|                | Value              |
+|:---------------|:-------------------|
+| Frames Counted | 3835               |
+| Average:       | 253.77919293430318 |
+| Minimum:       | 112.60415884693342 |
+| Maximum:       | 396.63938268494314 |
+| Deviation:     | 47.985137581993136 |
+
+### RX Vega 56
+
+### RX Vega 56 - VR
+
+### Meta Quest 3 (Standalone)
+Left hand tracker must be set to `/user/fbhandaim/left` in order to get Godot to listen to the left hand input.
+Note, that this will mess up the rotation of the hand models.
+
+|                | Value              |
+|:---------------|:-------------------|
+| Frames Counted | 363                |
+| Average:       | 25.034885077865844 |
+| Minimum:       | 10.296399006054282 |
+| Maximum:       | 49.80823828261193  |
+| Deviation:     | 7.3812614800931495 |
