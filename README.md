@@ -4,7 +4,13 @@ Volumetric rendering implemented in Godot 4.4. The example project can be
 played on desktop and Meta Quest 3. The shader used for rendering can
 be used in any other Godot project as well.
 
-## Setup Guide
+## Using the Shaders
+The shaders can be found in `/shaders`. There are two versions of the
+shader. The non-XR version looks a bit better in a non-XR setting
+but will look unnatural in an XR setting as it does not account for
+eye offsets. The XR version works fine in both settings.
+
+## Setup Guide for using this project
 In order to use the application, prepare the following things:
 * Make sure to have some data ready.
   * For now, the images need to be provided as multiple `.png` files, with each of those representing one slice. (All need to be in the same resolution and in `Rbg8` format)
@@ -29,7 +35,7 @@ or decrease their respective parameters:
 * _B_: Starts the benchmark
 
 ## Benchmarks
-All Benchmarks listed here are done with the `1135_gold_img` data set
+All Benchmarks listed here are done with the `1135_gold_img` (not included in this repo) data set
 and the shader's default settings, except for the sampling rate which
 has been set to 64. (Lower sampling rate means worse image output precision,
 but with a higher sampling rate the performance on the standalone
