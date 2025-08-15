@@ -65,7 +65,7 @@ void fragment() {
 
 		float density = texture(volume_texture, uvw).r;
 		if(density > density_threshold) {
-			// I think, this should depend on step size -> otherwise an area will
+			// I think, this could depend on step size -> otherwise an area will
 			// 'light up' faster, the more often it is sampled. But idk how.
 			final_color.rgb += vec3(density);
 			final_color.a += density * modulation_factor;

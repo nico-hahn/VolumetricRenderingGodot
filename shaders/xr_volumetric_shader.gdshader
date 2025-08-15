@@ -11,11 +11,11 @@ varying vec3 world_position;
 varying mat4 model_matrix;
 
 void vertex() {
-    world_position = VERTEX; // bleibt im Object Space
+    world_position = VERTEX;
 	model_matrix = MODEL_MATRIX;
 }
 
-// Hilfsfunktion zum Transformieren von Kamera-Position aus World → Object Space
+// Converts the camera position into object space
 vec3 get_camera_pos_object_space(vec3 campos) {
     mat3 rot = mat3(model_matrix);
     vec3 translation = model_matrix[3].xyz;
@@ -43,8 +43,12 @@ float findBoxOffset(vec3 ro, vec3 rd) {
 }
 
 void fragment() {
-    vec3 ro = get_camera_pos_object_space(CAMERA_POSITION_WORLD);         // Kamera im Object Space
-    vec3 rd = normalize(world_position - ro);        // Rayrichtung im Object Space
+	/*
+	  Apparently, CAMERA_POSITION_WORLD is the correct one for an XR
+	  environment because it takes the eye offset into account. 
+	*/
+    vec3 ro = get_camera_pos_object_space(CAMERA_POSITION_WORLD);
+    vec3 rd = normalize(world_position - ro);
 
     vec4 final_color = vec4(0.0);
     vec3 pos;
@@ -53,16 +57,22 @@ void fragment() {
     float t = findBoxOffset(ro, rd);
 
     for (int i = 0; i < int(max_steps); i++) {
+    	// Gets current object space position of the raymarch
         pos = ro + rd * t;
         t += step_size;
 
+		// Turns the raymarching position into texture coordinates [0..1]
+		// 0.5 offset because origin is in the middle
         vec3 uvw = (pos / volume_shape) + 0.5;
 
+		// Check if point is outside of the volume texture
         if (any(lessThan(uvw, vec3(0.0))) || any(greaterThan(uvw, vec3(1.0))))
             break;
 
         float density = texture(volume_texture, uvw).r;
         if (density > density_threshold) {
+        	// I think, this could depend on step size -> otherwise an area will
+            // 'light up' faster, the more often it is sampled. But idk how.
             final_color.rgb += vec3(density);
             final_color.a += density * modulation_factor;
         }
